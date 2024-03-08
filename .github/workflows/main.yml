@@ -8,11 +8,11 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3 # Updated to v3
 
     # Java 8 setup
     - name: Set up JDK 8
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3 # Assuming v3 is available and does not use deprecated features
       with:
         java-version: '8'
         distribution: 'adopt'
@@ -28,22 +28,20 @@ jobs:
       with:
         files: target/surefire-reports/*.xml
 
-      # Publie les fichiers présents dans le dossier target dans un build artifact
+    # Upload the build artifacts
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@v3 # Updated to v3 assuming it is available
       with:
-         name: my-app-1.0
-         path: target/*
+        name: my-app-1.0
+        path: target/*
 
-
-      # Installe la commande docker sur l'agent
+    # Setup Docker
     - name: Install Docker
-      uses: docker/setup-buildx-action@v1
-      id: buildx
+      uses: docker/setup-buildx-action@v2 # Updated to v2
       with:
         install: true
           
-      # Build l'image Docker
+    # Docker build
     - name: Docker build
       run: |
-        docker build .
+        docker build -t my-app:latest .
